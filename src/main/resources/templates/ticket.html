@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css" />
+
+
+    <script type="text/javascript" th:inline="javascript">
+var timeLeft;
+
+  function getTime() { 
+        timeLeft = document.getElementById('enteredTime').value;
+        // alert(timeLeft);
+        timeout();
+    }
+	function timeout()
+	{
+		// alert(timeLeft.value);
+		var hours=Math.floor(timeLeft/3600);
+		var minute=Math.floor((timeLeft-(hours*60*60)-30)/60);
+		var second=timeLeft%60;
+		var hrs=checktime(hours);
+		var mint=checktime(minute);
+		var sec=checktime(second);
+
+		/*<![CDATA[*/
+		if(timeLeft <=0)
+		{
+			clearTimeout(tm);
+			<!--alert("Timeout ");-->
+			window.location.replace("http://localhost:8080/");
+		    <!--document.getElementById("index").submit();-->
+		}
+		else
+		{
+
+			document.getElementById("time").innerHTML=hrs+":"+mint+":"+sec;
+		} /*]]>*/
+		timeLeft--;
+		var tm= setTimeout(function(){timeout()},1000);
+	}
+	function checktime(msg)
+	{
+	/*<![CDATA[*/
+		if(msg<10)
+		{
+			msg="0"+msg;
+		}
+		 /*]]>*/
+		return msg;
+	}
+
+    </script>
+</head>
+
+<body >
+<h1>
+    <div id="time" style="float:right">timeout</div>
+</h1>
+
+
+<br />
+Assign Time in Number :<br />
+<!--<input id="lastName"-->
+       <!--class="form-control"-->
+       <!--th:field="*{lastName}"/>-->
+<input type="text"  id="enteredTime"  />
+<br />
+<input type="button" value="click" OnClick="getTime()" />
+<br />
+<script type="text/javascript" th:inline="javascript">
+		 	//var timeLeft=document.getElementById("enteredTime").value;
+
+            // var timeLeft=10;
+		  //var timeLeft=2*60*60;
+		  
+
+</script>
+<p>Please fill up the form</p>
+
+<form class="form-horizontal" th:object="${ticketEntity}" th:action="@{/ticketdata}" method="post">
+<!--<form method="post" class="form-group" action="/ticket">-->
+<!--<form th:action="@{/test}" th:object="${TicketEntity}" method="post">-->
+    Ticket ID:<br />
+    <input type="text" name="ticketId" th:field="*{ticketId}" />
+
+    <br />
+    Ticket Type:<br />
+    <input type="text" name="ticketType" th:field="*{ticketType}" />
+    <br />
+    Assigned to :<br />
+    <input type="text" name="assignedTo" th:field="*{assignedTo}" />
+    <br />
+    Notes:<br />
+    <input type="text" name="notes" th:field="*{notes}" />
+    <br />
+    Followed up by:<br />
+    <input type="text" name="followedUpBy" th:field="*{followedUpBy}" />
+    <br />
+    Reviewed By :<br />
+    <input type="text" name="reviewedBy" th:field="*{reviewedBy}" />
+    <br />
+    Created By :<br />
+    <input type="text" name="createdBy" th:field="*{createdBy}" />
+    <br />
+    Active: <br />
+    <input type="radio" name="active" th:field="*{isActive}" value="yes" /> Yes<br />
+    <input type="radio" name="active" th:field="*{isActive}" value="no" /> No<br />
+    Created Date: <br />
+    <input type="date" name="createdDate" th:field="*{createdDate}" />
+    <br />
+
+
+    <div class="container">
+        <div class="row">
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" th:field="*{timeToComplete}" />
+                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+        </script>
+        </div>
+    </div>
+
+
+    <button type="submit">SUBMIT </button><br />
+
+
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+
+</form>
+</body>
+</html>
